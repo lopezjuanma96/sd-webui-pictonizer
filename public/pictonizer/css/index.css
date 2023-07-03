@@ -1,0 +1,105 @@
+html, body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+input[type=text] {
+    width: 80%;
+    max-width: 600px;
+    padding: 12px 20px;
+    margin: 8px 0.5%;
+    box-sizing: border-box;
+    border: 3px solid #ccc;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    outline: none;
+}
+
+input[type=button] {
+    font-weight: bold;
+    font-size: medium;
+    background-color: #f3a632;
+    color: white;
+    padding: 1%;
+    margin: 8px 0.5%;
+    border: none;
+    border-radius: 6%;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+    width: 10%;
+    max-width: 100px;
+}
+
+input[type=button]:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+input[type=button]:active {
+    opacity: 0.4;
+}
+
+input[type=button]:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+.invalidInput {
+    border: 1px solid red;
+    background-color: pink;
+    color: white
+}
+
+.invalidInput:focus {
+    outline: none;
+    border: 1px solid red;
+    background-color: pink;
+    color: white
+}
+
+.outputCanvas {
+    width: 50%;
+}
+
+.onlyOutputCanvas {
+    width: 100%;
+}
+
+#promptForm {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#outputBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70%;
+}
+
+#outputImage {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#outputText {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    color: #0f0f0f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}

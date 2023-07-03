@@ -11,6 +11,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from fastapi.staticfiles import StaticFiles
 from secrets import compare_digest
 
 import modules.shared as shared
@@ -208,6 +209,7 @@ class Api:
         self.add_api_route("/sdapi/v1/reload-checkpoint", self.reloadapi, methods=["POST"])
         self.add_api_route("/sdapi/v1/scripts", self.get_scripts_list, methods=["GET"], response_model=models.ScriptsList)
         self.add_api_route("/sdapi/v1/script-info", self.get_script_info, methods=["GET"], response_model=List[models.ScriptInfo])
+        self.app.mount("/gui", StaticFiles(directory="public", html=True), name="static")
 
         self.default_script_arg_txt2img = []
         self.default_script_arg_img2img = []
