@@ -4,15 +4,10 @@ from dotenv import load_dotenv
 
 # Connect to ngrok for ingress
 def connect(token, port, options):
-    account = None
-    if token is None:
-        token = 'None'
-    else:
-        if ':' in token:
-            # token = authtoken:username:password
-            token, username, password = token.split(':', 2)
-            account = f"{username}:{password}"
-
+    
+    if int(os.environ.get('NGROK_UP', '0')): # If ngrok is already up, don't do anything
+        print('ngrok is already up, skipping...')
+        return
     # Read env file, it might fail bc of multithreading,
     # in which case load the .env data into the environment manually
     load_dotenv() 
@@ -23,8 +18,10 @@ def connect(token, port, options):
     try:
         public_url = ngrok.connect(f"127.0.0.1:{port}", **options).url()
     except Exception as e:
-        print(f'Invalid ngrok authtoken? ngrok connection aborted due to: {e}\n'
-              f'Your token: {token}, get the right one on https://dashboard.ngrok.com/get-started/your-authtoken')
+        print(f'ngrok connection aborted due to: {e}\n'
+              f'Invalid ngrok authtoken? Your token: {options["authtoken"]}, get the right one on https://dashboard.ngrok.com/get-started/your-authtoken\n'
+              f'Invalid ngrok domain? Your domain: {options["domain"]}, get the right one on https://dashboard.ngrok.com/cloud-edge/domains\n')
     else:
         print(f'ngrok connected to localhost:{port}! URL: {public_url}\n'
-               'You can use this link after the launch is complete.')
+              f'You can use this link after the launch is complete.')
+        os.environ['NGROK_UP'] = '1'
