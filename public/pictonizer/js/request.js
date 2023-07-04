@@ -25,7 +25,7 @@ const txt2imgBody = {
     "sampler_name": "DDIM",
     "batch_size": 1,
     "n_iter": 1,
-    "steps": 50,
+    "steps": 25,
     "cfg_scale": 10,
     "width": 512,
     "height": 512,
@@ -49,3 +49,5 @@ const txt2imgBody = {
     "save_images": true,
     "alwayson_scripts": {}
   }
+
+const isDev = window.location.href.includes("?dev=true");

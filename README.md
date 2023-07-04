@@ -1,6 +1,6 @@
 # Stable Diffusion WebUI for Pictonizer
 
-This is a fork of [AUTOMATIC1111's]() [StableDiffusion WebUI](), for the creation of a Pictonizer.
+This is a fork of [AUTOMATIC1111's](https://github.com/AUTOMATIC1111) [StableDiffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui), for the creation of a Pictonizer.
 The idea is to provide a simple and stable WebUI for the Stable Diffusion Model trained on Pictograms.
 
 You can go to the original repo for more data on WebUI specifically, this are the modifications we propose:

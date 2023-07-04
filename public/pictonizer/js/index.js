@@ -11,6 +11,13 @@ const getImageFromBase64 = (base64) => {
     return img;
 }
 
+const addDevImageToOutput = () => {
+    /*
+    for testing purposes
+    */
+    outputImage.innerHTML = "<img src='./assets/img/test-image.png'>";
+}
+
 const addImagesToOutput = (images) => {
     outputImage.innerHTML = "";
     if (images.length == 0) return;
@@ -45,7 +52,6 @@ const addNoImageToOutput = () => {
     outputImage.appendChild(thisOutputCanvas);
     thisOutputCanvasContext.fillStyle = "red";
     thisOutputCanvasContext.fillRect(0, 0, 512, 512);
-    thisOutputCanvasContext.innerText = "No image returned";
 }
 
 promptSubmit.addEventListener('click', () => {
@@ -54,6 +60,11 @@ promptSubmit.addEventListener('click', () => {
         promptInput.classList.add("invalidInput");
         promptInput.placeholder = "Please enter a prompt";
         promptInput.setAttribute("invalid", true)
+        return;
+    }
+    if (isDev) {
+        console.log("dev mode")
+        addDevImageToOutput();
         return;
     }
     // this later will be done in GPT4
@@ -79,7 +90,7 @@ promptSubmit.addEventListener('click', () => {
             promptClear.disabled = false;
         }).catch(err => {
             console.log(err);
-            outputText.innerText = JSON.stringify(err, null, 2);
+            outputText.innerText = "No image returned\n" + JSON.stringify(err, null, 2);
             outputText.style.color = "red";
             addNoImageToOutput();
         })
@@ -88,7 +99,7 @@ promptSubmit.addEventListener('click', () => {
 promptClear.addEventListener('click', () => {
     promptInput.value = "";
     txt2imgBody.prompt = "";
-    outputBlock.innerText = "";
+    outputImage.innerHTML = "";
 })
 
 promptInput.addEventListener('input', e => {
@@ -97,9 +108,11 @@ promptInput.addEventListener('input', e => {
         promptInput.placeholder = "Enter a prompt";
         promptInput.setAttribute("invalid", false)
     }
-    if (e.target.key == "Enter") {
+})
+
+promptInput.addEventListener('keypress', e => {
+    if (e.key == "Enter") {
         e.preventDefault();
-        console.log("Enter pressed");
         promptSubmit.click();
     }
 })
