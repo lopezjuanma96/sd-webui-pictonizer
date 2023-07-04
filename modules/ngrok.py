@@ -1,4 +1,5 @@
 import ngrok
+import os
 
 # Connect to ngrok for ingress
 def connect(token, port, options):
@@ -13,7 +14,7 @@ def connect(token, port, options):
 
     # For all options see: https://github.com/ngrok/ngrok-py/blob/main/examples/ngrok-connect-full.py
     if not options.get('authtoken_from_env'):
-        options['authtoken'] = token
+        options['authtoken'] = os.environ.get('NGROK_AUTH_TOKEN', token)
     if account:
         options['basic_auth'] = account
     if not options.get('session_metadata'):
