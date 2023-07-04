@@ -15,11 +15,13 @@ const addDevImageToOutput = () => {
     /*
     for testing purposes
     */
+    hideLoader();
     outputImage.innerHTML = "<img src='./assets/img/test-image.png'>";
+    console.log("dev mode image added")
 }
 
 const addImagesToOutput = (images) => {
-    outputImage.innerHTML = "";
+    hideLoader();
     if (images.length == 0) return;
     // For some reason for more than one image the first image is always
     // a copy of the second so we skip it
@@ -46,12 +48,26 @@ const addImageToOutput = (image, index, only=false) => {
 }
 
 const addNoImageToOutput = () => {
-    outputImage.innerHTML = "";
+    hideLoader();
     const thisOutputCanvas = document.createElement('canvas');
     const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
     outputImage.appendChild(thisOutputCanvas);
     thisOutputCanvasContext.fillStyle = "red";
     thisOutputCanvasContext.fillRect(0, 0, 512, 512);
+}
+
+const showLoader = () => {
+    promptSubmit.disabled = true;
+    promptSubmit.value = "Loading...";
+    promptClear.disabled = true;
+    outputImage.innerHTML = "<div class='loaderBlock'><div class='loader'></div></div>"
+}
+
+const hideLoader = () => {
+    promptSubmit.disabled = false;
+    promptSubmit.value = "Submit";  
+    promptClear.disabled = false;
+    outputImage.innerHTML = "";
 }
 
 promptSubmit.addEventListener('click', () => {
@@ -63,16 +79,15 @@ promptSubmit.addEventListener('click', () => {
         return;
     }
     if (isDev) {
-        console.log("dev mode")
-        addDevImageToOutput();
+        console.log("dev mode image requested")
+        showLoader();
+        setTimeout(addDevImageToOutput, 1000 + Math.floor(Math.random() * 2000));
         return;
     }
     // this later will be done in GPT4
     txt2imgBody.prompt = "a pictogram of " + inputValue + ", (vectorized, drawing, simplified, rounded face, digital art, icon)";
     txt2imgBody.negative_prompt = "(words, letters, text, numbers, symbols), (details, open traces, sharp corners, distorted proportion), (lip, nose, tooth, rouge, wrinkles, detailed face, deformed body, extra limbs)"
-    promptSubmit.disabled = true;
-    promptSubmit.value = "Loading...";
-    promptClear.disabled = true;
+    showLoader();
     fetch(txt2imgUrl, {
         method: 'POST',
         body: JSON.stringify(txt2imgBody),
@@ -85,9 +100,6 @@ promptSubmit.addEventListener('click', () => {
             console.log(data);
             outputText.innerText = inputValue;
             addImagesToOutput(data.images);
-            promptSubmit.disabled = false;
-            promptSubmit.value = "Submit";  
-            promptClear.disabled = false;
         }).catch(err => {
             console.log(err);
             outputText.innerText = "No image returned\n" + JSON.stringify(err, null, 2);
