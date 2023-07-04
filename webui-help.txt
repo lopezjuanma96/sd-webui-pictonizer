@@ -1,4 +1,3 @@
-venv "C:\Users\Agus\Desktop\StableDiffusion\apps\SDWUI\venv\Scripts\Python.exe"
 usage: launch.py [-h] [--update-all-extensions] [--skip-python-version-check]
                  [--skip-torch-cuda-test] [--reinstall-xformers]
                  [--reinstall-torch] [--update-check] [--test-server]
@@ -127,7 +126,7 @@ options:
                         does not do anything.
   --ngrok-options NGROK_OPTIONS
                         The options to pass to ngrok in JSON format, e.g.:
-                        '{"authtoken_from_env":true,
+                        '{"authtoken_from_env":true, //set as NGROK_AUTH_TOKEN env var
                         "basic_auth":"user:password",
                         "oauth_provider":"google",
                         "oauth_allow_emails":"user@asdf.com"}'
@@ -276,4 +275,3 @@ options:
   --subpath SUBPATH     customize the subpath for gradio, use with reverse
                         proxy
   --add-stop-route      add /_stop route to stop server
-Presione una tecla para continuar . . . 
