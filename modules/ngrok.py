@@ -1,5 +1,6 @@
 import ngrok
 import os
+from dotenv import load_dotenv
 
 # Connect to ngrok for ingress
 def connect(token, port, options):
@@ -12,14 +13,12 @@ def connect(token, port, options):
             token, username, password = token.split(':', 2)
             account = f"{username}:{password}"
 
+    # Read env file, it might fail bc of multithreading,
+    # in which case load the .env data into the environment manually
+    load_dotenv() 
     # For all options see: https://github.com/ngrok/ngrok-py/blob/main/examples/ngrok-connect-full.py
-    if not options.get('authtoken_from_env'):
-        options['authtoken'] = os.environ.get('NGROK_AUTH_TOKEN', token)
-    if account:
-        options['basic_auth'] = account
-    if not options.get('session_metadata'):
-        options['session_metadata'] = 'stable-diffusion-webui'
-
+    options['authtoken'] = os.environ.get('NGROK_AUTH_TOKEN', None)
+    options['domain'] = os.environ.get('NGROK_DOMAIN', None)
 
     try:
         public_url = ngrok.connect(f"127.0.0.1:{port}", **options).url()

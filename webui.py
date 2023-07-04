@@ -77,15 +77,6 @@ if cmd_opts.server_name:
 else:
     server_name = "0.0.0.0" if cmd_opts.listen else None
 
-if cmd_opts.ngrok is not None:
-    import modules.ngrok as ngrok
-    print('ngrok authtoken detected, trying to connect...')
-    ngrok.connect(
-        cmd_opts.ngrok,
-        cmd_opts.port if cmd_opts.port is not None else 7860,
-        cmd_opts.ngrok_options
-        )
-
 def fix_asyncio_event_loop_policy():
     """
         The default `asyncio` event loop policy only automatically creates
@@ -258,6 +249,15 @@ def initialize():
     startup_timer.record("setup gfpgan")
 
     initialize_rest(reload_script_modules=False)
+
+    if cmd_opts.ngrok is not None:
+        import modules.ngrok as ngrok
+        print('ngrok authtoken detected, trying to connect...')
+        ngrok.connect(
+            cmd_opts.ngrok,
+            cmd_opts.port if cmd_opts.port is not None else 7860,
+            cmd_opts.ngrok_options
+            )
 
 
 def initialize_rest(*, reload_script_modules=False):
