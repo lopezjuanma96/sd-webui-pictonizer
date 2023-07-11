@@ -2,6 +2,8 @@ const promptInput = document.getElementById('promptInput');
 const promptSubmit = document.getElementById('promptSubmit');
 const promptClear = document.getElementById('promptClear');
 
+const editNav = document.getElementById('editNav');
+
 const outputText = document.getElementById('outputText');
 const outputImage = document.getElementById('outputImage');
 
@@ -16,8 +18,18 @@ const addDevImageToOutput = () => {
     for testing purposes
     */
     hideLoader();
-    outputImage.innerHTML = "<img src='./assets/img/test-image.png'>";
+    const thisOutputCanvas = document.createElement('canvas');
+    thisOutputCanvas.classList.add('outputCanvas');
+    thisOutputCanvas.classList.add('onlyOutputCanvas');
+    thisOutputCanvas.setAttribute('width', '512');
+    thisOutputCanvas.setAttribute('height', '512');
+    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
+    outputImage.appendChild(thisOutputCanvas);
+    const thisImage = new Image();
+    thisImage.src = './assets/img/test-image.png';
+    thisImage.onload = () => thisOutputCanvasContext.drawImage(thisImage, 0, 0);
     console.log("dev mode image added")
+    addCanvasListeners();
 }
 
 const addImagesToOutput = (images) => {
@@ -38,7 +50,7 @@ const addImageToOutput = (image, index, only=false) => {
     const thisOutputCanvas = document.createElement('canvas');
     thisOutputCanvas.classList.add('outputCanvas');
     if (only) thisOutputCanvas.classList.add('onlyOutputCanvas');
-    thisOutputCanvas.setAttribute('id', 'outputCanvas' + index);
+    //thisOutputCanvas.setAttribute('id', 'outputCanvas' + index);
     thisOutputCanvas.setAttribute('width', '512');
     thisOutputCanvas.setAttribute('height', '512');
     const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
@@ -68,6 +80,14 @@ const hideLoader = () => {
     promptSubmit.value = "Submit";  
     promptClear.disabled = false;
     outputImage.innerHTML = "";
+}
+
+const showEditNav = () => {
+    editNav.style.display = "flex";
+}
+
+const hideEditNav = () => {
+    editNav.style.display = "none"
 }
 
 promptSubmit.addEventListener('click', () => {
@@ -108,7 +128,21 @@ promptSubmit.addEventListener('click', () => {
         })
 })
 
+const addCanvasListeners = () => {
+    const outputCanvasList = document.getElementsByClassName('outputCanvas');
+    for (let i = 0; i < outputCanvasList.length; i++) {
+        outputCanvasList[i].addEventListener('click', () => {
+            if (outputCanvasList[i].getAttribute('id') == 'editCanvas') return;
+            outputCanvasList[i].setAttribute('id', 'editCanvas');
+            for (let j = 0; j < outputCanvasList.length; j++) if (j !== i) outputCanvasList[j].setAttribute('id', '');
+            showEditNav();
+            updateEditCanvas();
+        })
+    }
+}
+
 promptClear.addEventListener('click', () => {
+    hideEditNav();
     promptInput.value = "";
     txt2imgBody.prompt = "";
     outputImage.innerHTML = "";
@@ -128,3 +162,6 @@ promptInput.addEventListener('keypress', e => {
         promptSubmit.click();
     }
 })
+
+hideLoader();
+hideEditNav();

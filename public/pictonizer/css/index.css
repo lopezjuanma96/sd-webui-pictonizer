@@ -75,8 +75,34 @@ input[type=button]:disabled {
     color: white
 }
 
+.editNavButton {
+    padding: 10px 15px;
+    border-radius: 12px;
+}
+
+.editNavButton:hover {
+    cursor: pointer;
+}
+
+.editNavButtonActive {
+    background-color: #e0e0e0;
+}
+
+.editNavButtonDisabled {
+    background-color: #f5aaaa;
+    color: rgb(255, 50, 50);
+}
+
+.editNavButtonDisabled:hover {
+    cursor: not-allowed;
+}
+
 .outputCanvas {
     width: 50%;
+}
+
+.outputCanvas:hover {
+    cursor: pointer;
 }
 
 .onlyOutputCanvas {
@@ -97,6 +123,23 @@ input[type=button]:disabled {
     align-items: center;
     justify-content: center;
     width: 70%;
+}
+
+#editNav {
+    height: 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#editColor {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#editCanvas {
+    cursor: initial;
 }
 
 #outputImage {
