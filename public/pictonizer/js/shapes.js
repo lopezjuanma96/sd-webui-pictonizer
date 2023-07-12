@@ -289,3 +289,5 @@ class DrawnText extends Shape {
     }
 }
 // endregion
+
+// ADD BUCKET FROM https://cantwell-tom.medium.com/flood-fill-and-line-tool-for-html-canvas-65e08e31aec6

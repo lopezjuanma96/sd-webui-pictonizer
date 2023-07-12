@@ -76,6 +76,9 @@ input[type=button]:disabled {
 }
 
 .editNavButton {
+    display: flex;
+    align-items: center;
+    justify-content: centers;
     padding: 10px 15px;
     border-radius: 12px;
 }
@@ -136,6 +139,15 @@ input[type=button]:disabled {
 #editColor {
     padding-top: 5px;
     padding-bottom: 5px;
+}
+
+#editStrokeValue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 30px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
 }
 
 #editCanvas {

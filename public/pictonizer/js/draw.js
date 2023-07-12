@@ -12,6 +12,9 @@ const getStarSvg = () => `
 </svg>
 `
 
+const MAX_STROKE_WIDTH = 16;
+const MIN_STROKE_WIDTH = 1;
+
 // Code Extracted from: https://github.com/JonSteinn/Web-Paint/blob/master/assets/js/draw.js
 
 const updateEditCanvas = () => {
@@ -85,6 +88,22 @@ const updateEditCanvas = () => {
         setColor: function (color) {
             drawer.settings.color = color;
             if (drawer.selectedElement) drawer.selectedElement.settings = drawer.currentSettings();
+        },
+        /**
+         * Increase the stroke width.
+         */
+        increaseStroke: function () {
+            drawer.settings.width = Math.min(drawer.settings.width + 1, MAX_STROKE_WIDTH);
+            if (drawer.selectedElement) drawer.selectedElement.settings = drawer.currentSettings();
+            return drawer.settings.width;
+        },
+        /**
+         * Decrease the stroke width.
+         */
+        decreaseStroke: function () {
+            drawer.settings.width = Math.max(drawer.settings.width - 1, MIN_STROKE_WIDTH);
+            if (drawer.selectedElement) drawer.selectedElement.settings = drawer.currentSettings();
+            return drawer.settings.width;
         },
         /**
          * Redraws all elements to the canvas.
@@ -307,6 +326,21 @@ const updateEditCanvas = () => {
                  */
                 function (e) {
                     drawer.clear();
+                })
+        }
+        else if (element.classList.contains('editStrokeNavButton')) {
+            element.addEventListener('click',
+                /**
+                 * Changes the stoke width.
+                 * 
+                 * @param {MouseEvent}
+                 */
+                function (e) {
+                    const editStrokeValueNumber = document.getElementById("editStrokeValueNumber");
+                    var value = parseInt(editStrokeValueNumber.innerText);
+                    if (element.dataset.stroke === "increase") value = drawer.increaseStroke();
+                    else if (element.dataset.stroke === "decrease") value = drawer.decreaseStroke();
+                    editStrokeValueNumber.innerText = value;
                 })
         }
     }
