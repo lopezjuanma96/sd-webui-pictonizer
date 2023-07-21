@@ -24,9 +24,9 @@ const updateEditCanvas = () => {
         undoneShapes: [],
         selectedShape: 'pencil',
         canvas: document.getElementById('editCanvas'),
-        ctx: document.getElementById('editCanvas').getContext('2d'),
+        ctx: document.getElementById('editCanvas').getContext('2d', { willReadFrequently: true }),
         // Gets the startup for the image, which will be the generated picto and should also be the edited image, so we can redraw it later
-        startup: document.getElementById('editCanvas').getContext('2d').getImageData(0, 0, document.getElementById('editCanvas').width, document.getElementById('editCanvas').height),
+        startup: document.getElementById('editCanvas').getContext('2d', { willReadFrequently: true }).getImageData(0, 0, document.getElementById('editCanvas').width, document.getElementById('editCanvas').height),
         selectedElement: null,
         availableShapes: {
             RECTANGLE: 'rectangle',
@@ -35,6 +35,7 @@ const updateEditCanvas = () => {
             LINE: 'line',
             PENCIL: 'pencil',
             DrawnText: 'text',
+            BUCKET: 'bucket',
             MOVE: 'move' // TODO
         },
         settings: {
@@ -176,6 +177,9 @@ const updateEditCanvas = () => {
                     }
                     drawer.selectedElement = new DrawnText(pos, drawer.currentSettings());
                     break;
+                case drawer.availableShapes.BUCKET:
+                    drawer.selectedElement = new Bucket(mousePos, drawer.currentSettings());
+                    break;
                 case drawer.availableShapes.MOVE:
                     // TODO
                     break;
@@ -189,7 +193,7 @@ const updateEditCanvas = () => {
          * @param {MouseEvent} e
          */
         function (e) {
-            if (drawer.selectedElement && drawer.selectedShape !== drawer.availableShapes.DrawnText) {
+            if (drawer.selectedElement && drawer.selectedShape !== drawer.availableShapes.DrawnText && drawer.selectedShape !== drawer.availableShapes.BUCKET) {
                 const mousePos = {x: e.offsetX, y: e.offsetY};
                 drawer.selectedElement.resize(mousePos.x, mousePos.y);
                 drawer.redraw();
@@ -207,6 +211,7 @@ const updateEditCanvas = () => {
                 drawer.shapes.push(drawer.selectedElement);
                 drawer.selectedElement = null;
                 drawer.undoneShapes.splice(0, drawer.undoneShapes.length);
+                if (drawer.selectedShape === drawer.availableShapes.BUCKET) drawer.redraw(); 
             }
         })
     //END SHAPE MOUSE EVENTS

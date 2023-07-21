@@ -23,10 +23,10 @@ const addDevImageToOutput = () => {
     thisOutputCanvas.classList.add('onlyOutputCanvas');
     thisOutputCanvas.setAttribute('width', '512');
     thisOutputCanvas.setAttribute('height', '512');
-    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
+    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d', { willReadFrequently: true });
     outputImage.appendChild(thisOutputCanvas);
     const thisImage = new Image();
-    thisImage.src = './assets/img/test-image.png';
+    thisImage.src = './assets/img/test-image.jpg';
     thisImage.onload = () => thisOutputCanvasContext.drawImage(thisImage, 0, 0);
     console.log("dev mode image added")
     addCanvasListeners();
@@ -53,7 +53,7 @@ const addImageToOutput = (image, index, only=false) => {
     //thisOutputCanvas.setAttribute('id', 'outputCanvas' + index);
     thisOutputCanvas.setAttribute('width', '512');
     thisOutputCanvas.setAttribute('height', '512');
-    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
+    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d', { willReadFrequently: true });
     outputImage.appendChild(thisOutputCanvas);
     const thisImage = getImageFromBase64(image);
     thisImage.onload = () => thisOutputCanvasContext.drawImage(thisImage, 0, 0);
@@ -62,7 +62,7 @@ const addImageToOutput = (image, index, only=false) => {
 const addNoImageToOutput = () => {
     hideLoader();
     const thisOutputCanvas = document.createElement('canvas');
-    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d');
+    const thisOutputCanvasContext = thisOutputCanvas.getContext('2d', { willReadFrequently: true });
     outputImage.appendChild(thisOutputCanvas);
     thisOutputCanvasContext.fillStyle = "red";
     thisOutputCanvasContext.fillRect(0, 0, 512, 512);
